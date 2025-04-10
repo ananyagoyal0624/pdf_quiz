@@ -4,10 +4,12 @@ from pydantic import BaseModel
 import shutil
 import os
 import tempfile
+
 import asyncio
 from pdf_to_quizz import pdf_to_quizz
 from quizz_generator import generate_quizz
 from ui_utils import transform
+from fastapi.responses import HTMLResponse
 
 app = FastAPI() # using a single fastapi instance to manage both the apis simultaneously
 
@@ -18,6 +20,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return "<h2>✅ FastAPI is Live!<br>Visit <a href='/docs'>/docs</a> to test the API.</h2>"
+
 
 # PDF to Quiz Endpoint
 @app.post("/pdf_to_quizz/")
