@@ -13,13 +13,19 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI() # using a single fastapi instance to manage both the apis simultaneously
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8081"],  # ✅ Add your frontend port here
+    allow_origins=[
+        "http://localhost:8081",                        # local dev
+        "https://edu-frontend-1.onrender.com"           # deployed frontend
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
